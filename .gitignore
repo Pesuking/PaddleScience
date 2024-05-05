@@ -132,3 +132,6 @@ FETCH_HEAD
 
 # auto generated version file by setuptools_scm
 ppsci/_version.py
+/outputs_allen_cahn_plain
+/examples/allen_cahn/outputs_allen_cahn_plain
+/examples/PirateNets/outputs_piratenets

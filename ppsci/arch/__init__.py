@@ -43,6 +43,7 @@ from ppsci.arch.cfdgcn import CFDGCN  # isort:skip
 from ppsci.arch.dgmr import DGMR  # isort:skip
 from ppsci.arch.vae import AutoEncoder  # isort:skip
 from ppsci.utils import logger  # isort:skip
+from ppsci.arch.piratenets import PirateNets  # isort:skip
 
 
 __all__ = [
@@ -72,6 +73,7 @@ __all__ = [
     "AutoEncoder",
     "build_model",
     "CFDGCN",
+    "PirateNets",
 ]
 
 
