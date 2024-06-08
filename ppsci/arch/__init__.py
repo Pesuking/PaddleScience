@@ -48,7 +48,7 @@ from ppsci.arch.tfnonet import TFNO1dNet, TFNO2dNet, TFNO3dNet  # isort:skip
 from ppsci.arch.unonet import UNONet  # isort:skip
 from ppsci.arch.cuboid_transformer import CuboidTransformer  # isort:skip
 from ppsci.utils import logger  # isort:skip
-
+from ppsci.arch.piratenets import PirateNets  # isort:skip
 
 __all__ = [
     "Arch",
@@ -84,6 +84,7 @@ __all__ = [
     "UNONet",
     "build_model",
     "CFDGCN",
+    "PirateNets",
 ]
 
 

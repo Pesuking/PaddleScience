@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import List
+from typing import Dict
 
 import paddle
 from paddle import nn
@@ -59,7 +59,9 @@ class NTK(base.LossAggregator):
 
         return ntk_weight
 
-    def __call__(self, losses: List["paddle.Tensor"], step: int = 0) -> "paddle.Tensor":
+    def __call__(
+        self, losses: Dict[str, "paddle.Tensor"], step: int = 0
+    ) -> "paddle.Tensor":
         assert len(losses) == self.num_losses, (
             f"Length of given losses({len(losses)}) should be equal to "
             f"num_losses({self.num_losses})."
@@ -67,13 +69,16 @@ class NTK(base.LossAggregator):
         self.step = step
 
         # compute current loss with moving weights
-        loss = self.weight[0] * losses[0]
-        for i in range(1, len(losses)):
-            loss += self.weight[i] * losses[i]
+        loss = 0.0
+        for i, key in enumerate(losses):
+            if i == 0:
+                loss = self.weight[i] * losses[key]
+            else:
+                loss += self.weight[i] * losses[key]
 
         # update moving weights every 'update_freq' steps
         if self.step % self.update_freq == 0:
-            computed_weight = self._compute_weight(losses)
+            computed_weight = self._compute_weight(list(losses.values()))
             for i in range(self.num_losses):
                 self.weight[i].set_value(computed_weight[i])
 

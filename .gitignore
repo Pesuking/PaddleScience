@@ -132,3 +132,6 @@ FETCH_HEAD
 
 # auto generated version file by setuptools_scm
 ppsci/_version.py
+/examples/PirateNets/outputs_piratenets
+/examples/PirateNets/dataset
+examples/PirateNets/data.ipynb

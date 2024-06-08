@@ -28,6 +28,7 @@ from ppsci.equation.pde import NavierStokes
 from ppsci.equation.pde import NormalDotVec
 from ppsci.equation.pde import Poisson
 from ppsci.equation.pde import Vibration
+from ppsci.equation.pde import KDV
 from ppsci.utils import logger
 from ppsci.utils import misc
 
@@ -47,6 +48,7 @@ __all__ = [
     "NLSMB",
     "FractionalPoisson",
     "build_equation",
+    "KDV",
 ]
 
 

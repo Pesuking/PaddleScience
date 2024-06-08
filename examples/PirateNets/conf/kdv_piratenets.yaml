@@ -1,7 +1,7 @@
 hydra:
   run:
     # dynamic output directory according to running time and override name
-    dir: outputs_allen_cahn_defalut_ntk/${now:%Y-%m-%d}/${now:%H-%M-%S}/${hydra.job.override_dirname}
+    dir: outputs_piratenets/${now:%Y-%m-%d}/${now:%H-%M-%S}/${hydra.job.override_dirname}
   job:
     name: ${mode} # name of logfile
     chdir: false # keep current working direcotry unchaned
@@ -15,6 +15,7 @@ hydra:
           - mode
           - output_dir
           - log_freq
+
   callbacks:
     init_callback:
       _target_: ppsci.utils.callbacks.InitCallback
@@ -29,32 +30,39 @@ seed: 42
 output_dir: ${hydra:run.dir}
 log_freq: 100
 use_tbd: false
+use_vdl: false
+use_wandb: false
+wandb_config: null
+device: "cpu"
+to_static: false
+use_amp: false
+amp_level: "O1"
 
-DATA_PATH: ./dataset/allen_cahn.mat
+DATA_PATH: "./dataset/kdv.mat"
 
 # model settings
 MODEL:
-  input_keys: [t, x]
-  output_keys: [u]
-  num_layers: 4
+  input_keys: ["t", "x"]
+  output_keys: ["u",]
+  num_layers: 9
   hidden_size: 256
-  activation: tanh
+  alpha: 0
+  mu: 1.0 # random weight 
+  sigma: 0.1
+  activation: "Tanh"
   periods:
-    x: [2.0, False]
+    x: ["2.0", false] # [period, trainable]
   fourier:
     dim: 256
     scale: 2.0
-  random_weight:
-    mean: 1.0
-    std: 0.1
 
 # training settings
 TRAIN:
-  epochs: 200
+  epochs: 300
   iters_per_epoch: 1000
   save_freq: 10
   eval_during_train: true
-  eval_freq: 1
+  eval_freq: 10
   lr_scheduler:
     epochs: ${TRAIN.epochs}
     iters_per_epoch: ${TRAIN.iters_per_epoch}
@@ -62,19 +70,25 @@ TRAIN:
     gamma: 0.9
     decay_steps: 5000
     by_epoch: false
-  batch_size: 4096
+  batch_size: 8192
   pretrained_model_path: null
   checkpoint_path: null
+  update_freq: 1
+  start_eval_epoch: 1
   causal:
     n_chunks: 32
     tol: 1.0
-  ntk:
+  grad_norm:
     update_freq: 1000
+    momentum: 0.9
+  # ntk:
+  #   update_freq: 1000
 
 # evaluation settings
 EVAL:
   pretrained_model_path: null
   eval_with_no_grad: true
+  compute_metric_by_batch: false
   batch_size: 4096
 
 # inference settings

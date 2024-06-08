@@ -24,6 +24,7 @@ from ppsci.equation.pde.nls_m_b import NLSMB
 from ppsci.equation.pde.normal_dot_vec import NormalDotVec
 from ppsci.equation.pde.poisson import Poisson
 from ppsci.equation.pde.viv import Vibration
+from ppsci.equation.pde.kdv import KDV
 
 __all__ = [
     "PDE",
@@ -38,4 +39,5 @@ __all__ = [
     "NormalDotVec",
     "Poisson",
     "Vibration",
+    "KDV",
 ]

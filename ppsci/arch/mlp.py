@@ -86,7 +86,8 @@ class RandomWeightFactorization(nn.Layer):
 
         self.weight_g.stop_gradient = False
         self.weight_v.stop_gradient = False
-        self.bias.stop_gradient = False
+        if self.bias is not None:
+            self.bias.stop_gradient = False
 
     def forward(self, input):
         return nn.functional.linear(input, self.weight_g * self.weight_v, self.bias)
