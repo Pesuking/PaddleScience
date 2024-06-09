@@ -85,7 +85,7 @@ def train(cfg: DictConfig):
         }
 
     def gen_label_batch(input_batch):
-        return {"KDV": np.zeros([cfg.TRAIN.batch_size, 1], dtype)}
+        return {"kdv": np.zeros([cfg.TRAIN.batch_size, 1], dtype)}
 
     pde_constraint = ppsci.constraint.SupervisedConstraint(
         {
@@ -123,9 +123,10 @@ def train(cfg: DictConfig):
     }
 
     # In cases where the data comes from an initial condition u0(x), we initialize the weights of the last layer to fit uθ(t, x) to u0(x)for all t.
-    T = np.vstack([np.full([len(x_star), 1], t_star[i]) for i in range(len(t_star))])
-    X = np.vstack([x_star.reshape([-1, 1]) for _ in range(len(t_star))])
-    Y = np.vstack([u0.reshape([-1, 1]) for i in range(len(t_star))])
+    t = t_star[::10]
+    T = np.vstack([np.full([len(x_star), 1], t[i]) for i in range(len(t))])
+    X = np.vstack([x_star.reshape([-1, 1]) for _ in range(len(t))])
+    Y = np.vstack([u0.reshape([-1, 1]) for _ in range(len(t))])
 
     model.pi_initialization(
         {

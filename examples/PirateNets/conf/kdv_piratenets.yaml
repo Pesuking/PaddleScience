@@ -33,7 +33,7 @@ use_tbd: false
 use_vdl: false
 use_wandb: false
 wandb_config: null
-device: "cpu"
+device: "gpu"
 to_static: false
 use_amp: false
 amp_level: "O1"

@@ -131,11 +131,17 @@ class PirateNets(base.Arch):
         if self.fourier:
             phi_x = self.fourier_emb(phi_x)
 
-        w = np.linalg.lstsq(phi_x.numpy(), y[self.output_keys[0]].numpy(), rcond=None)[
-            0
-        ]
-        w = paddle.to_tensor(w, dtype=paddle.get_default_dtype())
-        self.linear_out.weight.set_value(w)
+        coeffs, residuals, rank, s = np.linalg.lstsq(
+            phi_x.numpy(), y[self.output_keys[0]].numpy(), rcond=None
+        )
+
+        print("pi_initialization Residuals:", residuals)
+        print("pi_initialization Rank:", rank)
+        # print("pi_initialization Singular values:", s)
+        
+        coeffs = paddle.to_tensor(coeffs, dtype=paddle.get_default_dtype())
+
+        self.linear_out.weight.set_value(coeffs)
 
     def forward(self, x: Dict[str, paddle.Tensor]):
         if self.periods:
